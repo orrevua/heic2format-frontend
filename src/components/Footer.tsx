@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#dab16f] hidden h-20 sm:hidden md:flex justify-between items-center">
       <div className="px-8">
-        <a href="https://www.github.com/flpfrnc/heic2format-frontend">
+        <a href="https://github.com/orrevua/heic2format-frontend">
           &gt; feel free to contribute<span className="animate-pulse">_</span>
         </a>
       </div>
