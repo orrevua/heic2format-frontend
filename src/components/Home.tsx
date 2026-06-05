@@ -50,103 +50,114 @@ export default function Home() {
   const errorCount = results.filter((r) => r.status === "error").length;
 
   return (
-    <>
-      <section className="w-full flex flex-col justify-start items-start py-10 sm:px-0 xl:px-20">
-        <div className="flex flex-col px-14 md:px-32 w-fit">
-          <span className="text-black font-bold text-[30px] sm:text-[30px] md:text-[70px] xl:text-[70px] leading-[1]">
-            HEIC2Format
-          </span>
-          <span>Convert your images from .HEIC to .JPEG and .PNG</span>
+    <div className="flex-1 flex flex-col relative z-10">
+      {/* Hero + Converter */}
+      <section className="w-full flex flex-col items-center py-8 md:py-14 px-6">
+        {/* Title */}
+        <div className="text-center mb-10 md:mb-14">
+          <h1 className="font-['Baloo_2'] font-extrabold text-[2.5rem] sm:text-[3.2rem] md:text-[4.5rem] leading-[1] text-[var(--navy)] tracking-tight mb-3">
+            HEIC
+            <span className="relative inline-block mx-1">
+              <span className="relative z-10">2</span>
+              <span className="absolute inset-0 bg-[var(--yellow)] border-[3px] border-[var(--border)] rounded-xl -rotate-3 scale-[1.3]" />
+            </span>
+            Format
+          </h1>
+          <p className="text-[var(--navy)] opacity-60 font-semibold text-base md:text-lg mt-2">
+            Convert your iPhone photos from .HEIC to .JPEG and .PNG
+          </p>
         </div>
 
-        <div className="flex flex-col gap-4 justify-center items-center px-8 sm:px-8 md:px-32 min-w-full md:min-w-[300px] py-16">
-          <div className="bg-white rounded-lg min-h-fit w-[300px] sm:max-w-[300px] md:max-w-[416px] sm:w-[300px] md:w-[416px] shadow-2xl flex flex-col justify-center items-center">
-            <FileInput
-              selectedFiles={files}
-              setSelectedFiles={setFiles}
-              className="w-[256px] sm:w-[256px] md:w-[416px]"
-            />
-            <hr className="w-full" />
-            <div className="w-full flex">
-              <select
-                className="px-4 py-2 outline-none border-none rounded-b-lg w-fit h-full text-center bg-white hover:bg-gray-100 cursor-pointer font-bold italic text-black"
-                value={toFormat}
-                onChange={(e) => setToFormat(e.target.value)}
-                aria-label="Output format"
-              >
-                <option value="jpeg">JPEG</option>
-                <option value="png">PNG</option>
-              </select>
-              <div className="w-full flex justify-end items-center px-6 text-sm text-gray-500 truncate">
+        {/* Converter Card */}
+        <div className="w-full max-w-md">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[3px] border-[var(--border)] cartoon-shadow p-5 flex flex-col gap-4">
+            <FileInput selectedFiles={files} setSelectedFiles={setFiles} />
+
+            {/* Format selector */}
+            <div className="flex items-center gap-3">
+              <div className="flex bg-[var(--cream)] rounded-xl border-[2.5px] border-[var(--border)] overflow-hidden">
+                {["jpeg", "png"].map((fmt) => (
+                  <button
+                    key={fmt}
+                    onClick={() => setToFormat(fmt)}
+                    className={`px-5 py-2 font-['Baloo_2'] font-bold text-sm uppercase tracking-wider transition-colors ${
+                      toFormat === fmt
+                        ? "bg-[var(--indigo)] text-white"
+                        : "text-[var(--navy)] hover:bg-[#F0EDFF]"
+                    }`}
+                  >
+                    {fmt}
+                  </button>
+                ))}
+              </div>
+              <span className="text-xs text-[var(--navy)] opacity-40 font-medium truncate flex-1 text-right">
                 {files?.length
                   ? `${files.length} file${files.length > 1 ? "s" : ""} ready`
                   : ""}
-              </div>
+              </span>
             </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-col md:flex-row gap-4">
-            {converting ? (
-              <div className="flex items-center gap-2">
-                <Spinner />
-                <span className="text-sm text-gray-600 italic">
-                  Converting {results.filter((r) => r.status === "done").length}/{results.length}...
-                </span>
-              </div>
-            ) : (
-              <button
-                onClick={handleConvert}
-                disabled={!files?.length}
-                className="bg-[#F49462] hover:bg-[#d97037] active:bg-[#F49462E6] disabled:bg-gray-400 disabled:cursor-not-allowed text-white text-lg italic shadow-lg py-2 px-6 rounded-lg transition-colors"
-              >
-                Convert {files && files.length > 1 ? `${files.length} Images` : "Image"}
-              </button>
-            )}
-            {doneCount > 1 && (
-              <button
-                onClick={handleDownloadAll}
-                className="bg-[#172767] hover:bg-[#161E3EF2] active:bg-[#223a9a] text-white text-lg italic shadow-lg py-2 px-6 rounded-lg transition-colors"
-              >
-                Download All ({doneCount})
-              </button>
-            )}
+            {/* Action buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              {converting ? (
+                <div className="flex items-center justify-center gap-3 w-full py-2">
+                  <Spinner />
+                  <span className="font-['Baloo_2'] font-semibold text-[var(--navy)] text-sm">
+                    Converting {results.filter((r) => r.status === "done").length}/{results.length}...
+                  </span>
+                </div>
+              ) : (
+                <button
+                  onClick={handleConvert}
+                  disabled={!files?.length}
+                  className="btn-cartoon bg-[var(--tangerine)] text-white flex-1"
+                >
+                  {files && files.length > 1 ? `Convert ${files.length} Images` : "Convert Image"}
+                </button>
+              )}
+              {doneCount > 1 && !converting && (
+                <button
+                  onClick={handleDownloadAll}
+                  className="btn-cartoon bg-[var(--navy)] text-white flex-1"
+                >
+                  Download All ({doneCount})
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="w-full bg-white min-h-[100px] sm:min-h-[100px] md:min-h-[300px] flex flex-col px-14 sm:px-14 md:px-32 mt-auto sm:mt-auto py-8">
-        {results.length > 0 ? (
-          <>
-            <div className="flex items-center justify-between mb-4">
+      {/* Results Gallery — only shown when there are results */}
+      {results.length > 0 && (
+        <section className="w-full px-6 md:px-16 xl:px-32 py-8 md:py-12">
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl border-[3px] border-[var(--border)] cartoon-shadow p-6 md:p-8">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <h2 className="text-lg font-bold text-gray-800">
+                <h2 className="font-['Baloo_2'] font-bold text-xl text-[var(--navy)]">
                   Converted Images
                 </h2>
                 {errorCount > 0 && (
-                  <span className="text-xs text-red-500">
+                  <span className="bg-[var(--coral)] text-white text-xs font-bold px-2.5 py-0.5 rounded-full border-2 border-[var(--border)]">
                     {errorCount} failed
                   </span>
                 )}
               </div>
               <button
                 onClick={handleClear}
-                className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+                className="font-['Baloo_2'] text-sm font-semibold text-[var(--navy)] opacity-40 hover:opacity-70 transition-opacity"
               >
                 Clear all
               </button>
             </div>
-            <div className="flex flex-wrap gap-4">
-              {results.map((img) => (
-                <ImageCard key={img.id} image={img} />
+            <div className="flex flex-wrap gap-5 justify-center sm:justify-start">
+              {results.map((img, i) => (
+                <ImageCard key={img.id} image={img} index={i} />
               ))}
             </div>
-          </>
-        ) : (
-          <span className="w-full text-center sm:text-center md:text-left md:px-0 xl:px-20 text-[1rem] md:text-xl text-gray-400 font-bold self-center">
-            No images converted yet
-          </span>
-        )}
-      </section>
-    </>
+          </div>
+        </section>
+      )}
+    </div>
   );
 }

@@ -3,9 +3,10 @@ import Spinner from "./Spinner";
 
 interface ImageCardProps {
   image: ConvertedImage;
+  index: number;
 }
 
-export default function ImageCard({ image }: ImageCardProps) {
+export default function ImageCard({ image, index }: ImageCardProps) {
   const handleDownload = () => {
     const a = document.createElement("a");
     a.href = image.fileUrl;
@@ -14,8 +15,11 @@ export default function ImageCard({ image }: ImageCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden w-[180px] flex flex-col">
-      <div className="h-[140px] flex items-center justify-center bg-gray-50">
+    <div
+      className="bg-[var(--card-bg)] rounded-2xl border-[3px] border-[var(--border)] cartoon-shadow overflow-hidden w-[190px] flex flex-col cartoon-shadow-hover animate-bounce-in"
+      style={{ animationDelay: `${index * 80}ms` }}
+    >
+      <div className="h-[150px] flex items-center justify-center bg-[#FFF9F0] border-b-[3px] border-[var(--border)]">
         {image.status === "converting" && <Spinner />}
         {image.status === "done" && (
           <img
@@ -25,23 +29,26 @@ export default function ImageCard({ image }: ImageCardProps) {
           />
         )}
         {image.status === "error" && (
-          <span className="text-red-400 text-xs text-center px-2">Failed</span>
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-2xl">:(</span>
+            <span className="text-[var(--coral)] text-xs font-bold font-['Baloo_2']">Failed</span>
+          </div>
         )}
       </div>
-      <div className="p-2 flex flex-col gap-1">
-        <span className="text-xs text-gray-600 truncate" title={image.fileName}>
+      <div className="p-3 flex flex-col gap-2">
+        <span className="text-xs text-[var(--navy)] font-semibold truncate" title={image.fileName}>
           {image.fileName}
         </span>
         {image.status === "done" && (
           <button
             onClick={handleDownload}
-            className="bg-[#172767] hover:bg-[#161E3EF2] text-white text-xs py-1 px-2 rounded transition-colors"
+            className="btn-cartoon bg-[var(--teal)] text-[var(--border)] text-xs !py-1.5 !px-3 !text-sm w-full"
           >
             Download
           </button>
         )}
         {image.status === "error" && (
-          <span className="text-xs text-red-500 truncate" title={image.error}>
+          <span className="text-xs text-[var(--coral)] truncate font-medium" title={image.error}>
             {image.error}
           </span>
         )}

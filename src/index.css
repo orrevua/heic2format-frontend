@@ -3,11 +3,25 @@
 @tailwind utilities;
 
 :root {
-  font-family: "DM Sans", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  overflow-x: hidden;
+  --cream: #FFF5E4;
+  --peach: #FEDEA9;
+  --tangerine: #F4845F;
+  --tangerine-dark: #E06A3E;
+  --coral: #F76C6C;
+  --navy: #1A1F4B;
+  --navy-light: #2D3477;
+  --indigo: #4267E3;
+  --teal: #3ECFB4;
+  --yellow: #FFD166;
+  --lavender: #C3A6FF;
+  --card-bg: #FFFCF7;
+  --border: #2B2B2B;
+  --shadow: #2B2B2B;
 
+  font-family: "Nunito", system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 500;
+  overflow-x: hidden;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -15,15 +29,138 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
 body {
   margin: 0;
   display: flex;
   min-width: 100%;
   min-height: 100vh;
+  background: var(--cream);
+}
+
+a {
+  font-weight: 600;
+  color: var(--indigo);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Cartoon sticker shadow utility */
+.cartoon-shadow {
+  box-shadow: 4px 4px 0px var(--shadow);
+}
+.cartoon-shadow-sm {
+  box-shadow: 3px 3px 0px var(--shadow);
+}
+.cartoon-shadow-hover {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cartoon-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--shadow);
+}
+.cartoon-shadow-hover:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px var(--shadow);
+}
+
+/* Bouncy entrance animation */
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1.08); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes dash-march {
+  to { stroke-dashoffset: -20; }
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+/* Cartoon dashed border for drop zone */
+.cartoon-dashed {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='%232B2B2BBB' stroke-width='3.5' stroke-dasharray='12%2c 8' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  border-radius: 20px;
+}
+.cartoon-dashed-active {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='%234267E3' stroke-width='4' stroke-dasharray='12%2c 8' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  border-radius: 20px;
+}
+
+/* Cartoon button base */
+.btn-cartoon {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  border: 3px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 24px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0px var(--shadow);
+  letter-spacing: 0.01em;
+}
+.btn-cartoon:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--shadow);
+}
+.btn-cartoon:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--shadow);
+}
+.btn-cartoon:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: 2px 2px 0px #999;
+  border-color: #999;
+}
+
+/* Decorative background blobs */
+.blob-bg::before,
+.blob-bg::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.15;
+}
+.blob-bg::before {
+  width: 400px;
+  height: 400px;
+  background: var(--coral);
+  top: -100px;
+  right: -80px;
+  animation: float 8s ease-in-out infinite;
+}
+.blob-bg::after {
+  width: 300px;
+  height: 300px;
+  background: var(--lavender);
+  bottom: -60px;
+  left: -60px;
+  animation: float 6s ease-in-out infinite reverse;
 }
