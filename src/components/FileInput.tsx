@@ -21,11 +21,16 @@ export default function FileInput({ selectedFiles, setSelectedFiles, className }
 
   const handleClick = () => fileInputRef.current?.click();
 
+  const isHeic = (f: File) => {
+    const name = f.name.toLowerCase();
+    if (name.endsWith(".heic") || name.endsWith(".heif")) return true;
+    const type = f.type.toLowerCase();
+    return type === "image/heic" || type === "image/heif";
+  };
+
   const validateAndSet = (files: FileList | File[]) => {
     const fileArray = Array.from(files);
-    const heicFiles = fileArray.filter(
-      (f) => f.name.toLowerCase().endsWith(".heic") || f.name.toLowerCase().endsWith(".heif")
-    );
+    const heicFiles = fileArray.filter(isHeic);
 
     if (heicFiles.length === 0) {
       setError("Please select HEIC or HEIF files.");
@@ -72,7 +77,7 @@ export default function FileInput({ selectedFiles, setSelectedFiles, className }
         ref={fileInputRef}
         className="hidden"
         onChange={handleChange}
-        accept=".heic,.heif"
+        accept=".heic,.heif,image/heic,image/heif"
         multiple
       />
 
