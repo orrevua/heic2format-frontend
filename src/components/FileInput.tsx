@@ -21,30 +21,22 @@ export default function FileInput({ selectedFiles, setSelectedFiles, className }
 
   const handleClick = () => fileInputRef.current?.click();
 
-  const isHeic = (f: File) => {
-    const name = f.name.toLowerCase();
-    if (name.endsWith(".heic") || name.endsWith(".heif")) return true;
-    const type = f.type.toLowerCase();
-    return type === "image/heic" || type === "image/heif";
-  };
-
   const validateAndSet = (files: FileList | File[]) => {
     const fileArray = Array.from(files);
-    const heicFiles = fileArray.filter(isHeic);
 
-    if (heicFiles.length === 0) {
-      setError("Please select HEIC or HEIF files.");
+    if (fileArray.length === 0) {
+      setError("No files selected.");
       return;
     }
 
-    const oversized = heicFiles.find((f) => f.size > MAX_FILE_SIZE);
+    const oversized = fileArray.find((f) => f.size > MAX_FILE_SIZE);
     if (oversized) {
       setError(`"${oversized.name}" exceeds 50MB limit.`);
       return;
     }
 
     setError(null);
-    setSelectedFiles(heicFiles);
+    setSelectedFiles(fileArray);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

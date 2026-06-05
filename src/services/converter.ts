@@ -54,7 +54,9 @@ export async function convertFiles(
   const results: ConvertedImage[] = files.map((f) => ({
     id: crypto.randomUUID(),
     originalName: f.name,
-    fileName: f.name.replace(/\.hei[cf]$/i, `.${format}`),
+    fileName: /\.hei[cf]$/i.test(f.name)
+      ? f.name.replace(/\.hei[cf]$/i, `.${format}`)
+      : `${f.name.replace(/\.[^.]+$/, "")}.${format}`,
     fileUrl: "",
     status: "converting",
   }));
